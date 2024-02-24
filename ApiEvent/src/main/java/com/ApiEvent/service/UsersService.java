@@ -1,8 +1,9 @@
 package com.ApiEvent.service;
-//quim
+
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ApiEvent.domain.UserAdmin;
@@ -11,10 +12,14 @@ import com.ApiEvent.repository.UserRepository;
 @Service
 public class UsersService {
 	
+	private PasswordEncoder passwordEncoder;
+	
 	UserRepository userRepository;
+	
 
-	public UsersService(UserRepository userRepository) {
+	public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public List<UserAdmin> getUsers(){
@@ -26,7 +31,13 @@ public class UsersService {
 	}
 	
 	public Long postUser(UserAdmin user){
-		UserAdmin saveUser = userRepository.save(user);
+		
+		UserAdmin _user = user;
+		String encryptPass = passwordEncoder.encode(user.getPassword());
+		
+		_user.setPassword(encryptPass);
+		
+		UserAdmin saveUser = userRepository.save(_user);
 		userRepository.save(saveUser);
 		return saveUser.getId();
 	}
@@ -39,6 +50,8 @@ public class UsersService {
 			_user.setEmail(user.getEmail());
 			_user.setUsuario(user.getUsuario());
 			_user.setPassword(user.getPassword());
+			_user.setUserTerms(user.getUserTerms());
+
 			userRepository.save(_user);
 		});
 		
