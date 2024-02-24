@@ -18,12 +18,14 @@ import com.ApiEvent.domain.UserAdmin;
 import com.ApiEvent.service.UsersService;
 import com.ApiEvent.web.error.ErrorMessage;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UsersController {
 	
 	@Autowired
 	UsersService usersService;
-	
+
 	@GetMapping(path = "/users")
 	List<UserAdmin>getUsers(@RequestParam(required = false) Map<String,String> params){	
 		
@@ -46,7 +48,7 @@ public class UsersController {
 	}
 	
 	@PostMapping(path = "/users")
-	Long postUser(@RequestBody UserAdmin user ) {				
+	Long postUser(@RequestBody @Valid UserAdmin user ) {				
 		return usersService.postUser(user);		
 	}
 	
