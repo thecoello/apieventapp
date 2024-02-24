@@ -1,20 +1,39 @@
 package com.ApiEvent.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class UserAdmin {
-	
+		
 	@Id
 	@GeneratedValue
-	Long id;
-	String Nombre;
-	String Apellido;
-	String Email;
-	String Usuario;
-	String Password;
+	private Long id;
+	
+    @NotBlank(message = "El nombre es requerido")		
+    private String Nombre;
+    
+    @NotBlank(message = "El Apellido es requerido")	
+    private String Apellido;
+    
+    @NotBlank(message = "El Email es requerido")
+    @Column(unique=true)
+    private String Email;
+    
+    @NotBlank(message = "El Usuario es requerido")
+    @Column(unique=true)
+    private String Usuario;
+    
+    @NotBlank(message = "El Password es requerido")		
+    private String Password;
+    
+    @NotBlank(message = "Aceptar los terminos de uso es requerido")		
+    private String Userterms;
+    
+    
 		
 	public Long getId() {
 		return id;
@@ -27,7 +46,7 @@ public class UserAdmin {
 	}
 	public void setNombre(String nombre) {
 		Nombre = nombre;
-	}
+	}	
 	public String getApellido() {
 		return Apellido;
 	}
@@ -52,8 +71,12 @@ public class UserAdmin {
 	public void setPassword(String password) {
 		Password = password;
 	}
-	
+	public String getUserTerms() {
+		return Userterms;
+	}
+	public void setUserTerms(String userTerms) {
+		Userterms = userTerms;
+	}
 
-	
-	
+		
 }
