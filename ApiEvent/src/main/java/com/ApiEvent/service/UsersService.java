@@ -17,9 +17,10 @@ public class UsersService {
 	UserRepository userRepository;
 	
 
-	public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder ) {
+	public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+	
 	}
 	
 	public List<UserAdmin> getUsers(){
@@ -45,12 +46,16 @@ public class UsersService {
 	public Optional<UserAdmin> putUser(Long id, UserAdmin user) {
 		userRepository.findById(id)
 		.ifPresent(_user -> {
+			
+			String encryptPass = passwordEncoder.encode(user.getPassword());
+			
 			_user.setNombre(user.getNombre());
 			_user.setApellido(user.getApellido());
 			_user.setEmail(user.getEmail());
 			_user.setUsuario(user.getUsuario());
-			_user.setPassword(user.getPassword());
+			_user.setPassword(encryptPass);
 			_user.setUserTerms(user.getUserTerms());
+			_user.setUserRole(user.getUserRole());
 
 			userRepository.save(_user);
 		});
