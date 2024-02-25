@@ -33,8 +33,10 @@ public class UserAdmin {
     @NotBlank(message = "Aceptar los terminos de uso es requerido")		
     private String Userterms;
     
+    private String UserRole = "ADMIN";
     
-		
+   
+    
 	public Long getId() {
 		return id;
 	}
@@ -77,6 +79,10 @@ public class UserAdmin {
 	public void setUserTerms(String userTerms) {
 		Userterms = userTerms;
 	}
-
-		
+	public String getUserRole() {
+		return UserRole;
+	}
+	public void setUserRole(String userRole) {
+		UserRole = userRole;
+	}		
 }
