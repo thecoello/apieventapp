@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,29 +19,27 @@ public class SecurityConfig   {
 	
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests((authz) -> authz
-                .requestMatchers(HttpMethod.GET,"/user").hasAnyRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT,"/users").hasAnyRole("ADMIN")
-                .anyRequest().authenticated()
+    	
+        http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests((authz) -> authz
+                    .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                    .anyRequest().hasAnyRole("ADMIN")
             )
             .httpBasic(Customizer.withDefaults());
+     
         return http.build();
     }
     
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(HttpMethod.POST,"/users");
-    }
-    
-    @Bean
     public UserDetailsService inMemoryUserDetailsManager() {
+    	
       UserDetails admin = User.builder()
           .username("admin")
           .password(passwordEncoder().encode("password"))
           .roles("ADMIN")
           .build();
-      return new InMemoryUserDetailsManager( admin);
+      
+      return new InMemoryUserDetailsManager(admin);
     }
 
     
