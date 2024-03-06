@@ -1,5 +1,7 @@
 package com.ApiEvent.web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +30,17 @@ public class ResetPassController {
 	public ResponseEntity<String> processForgotPassword(HttpServletRequest request) {
 	    String email = request.getParameter("email");
 	    String token = RandomString.make(30);
-	    
-	    System.out.print("Esto es el email" + email);
-	     
-	    try {
-	    	usersService.updateResetPasswordToken(token, email);
-	        String resetPasswordLink =  "http://localhost:8080/reset_password?token=" + token;
-	        mailService.sendSimpleMessage(email, "Recuperación de contraseña", resetPasswordLink);
-	        
-	    	return ResponseEntity.ok("Email de recuperación de password enviado");
-	         
-	    } catch (Exception error) {
+	    	 
+		if(usersService.updateResetPasswordToken(token, email) != null) {
+		     String resetPasswordLink =  "http://localhost:8080/reset_password?token=" + token;
+		        mailService.sendSimpleMessage(email, "Recuperación de contraseña", resetPasswordLink);
+		        return ResponseEntity.status(HttpStatus.OK).body("Email de recuperación de password enviado");	        
+
+		}else {
 	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email no encontrado");
-	    } 	         
+
+		}
+        
 	}
 	
 	@PostMapping("/reset_password")

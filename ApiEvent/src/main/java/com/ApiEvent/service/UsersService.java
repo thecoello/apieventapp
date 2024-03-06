@@ -67,14 +67,17 @@ public class UsersService {
 		return userRepository.findById(id);
 	}
 
-	public void updateResetPasswordToken(String token, String email) {
+	public UserAdmin updateResetPasswordToken(String token, String email) {
 		UserAdmin _user = userRepository.findByEmail(email);
-		if (_user != null) {
+		
+		if(_user != null) {
 			_user.setResetPasswordToken(token);
-			userRepository.save(_user);
-		} else {
-			throw new ErrorMessage("Could not find any customer with the email " + email);
+			return userRepository.save(_user);
+		}else {
+			return null;
 		}
+	
+		
 	}
 	
 	  public UserAdmin getByResetPasswordToken(String token) {
