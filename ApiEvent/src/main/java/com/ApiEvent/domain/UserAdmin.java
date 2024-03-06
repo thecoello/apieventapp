@@ -1,5 +1,9 @@
 package com.ApiEvent.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +25,10 @@ public class UserAdmin {
     
     @NotBlank(message = "El Email es requerido")
     @Column(unique=true)
-    private String Email;
+    private String email;
     
-    @NotBlank(message = "El Usuario es requerido")
+
+	@NotBlank(message = "El Usuario es requerido")
     @Column(unique=true)
     private String Usuario;
     
@@ -34,6 +39,8 @@ public class UserAdmin {
     private String Userterms;
     
     private String UserRole = "ADMIN";
+    
+    private String resetPasswordToken;
     
    
     
@@ -55,11 +62,11 @@ public class UserAdmin {
 	public void setApellido(String apellido) {
 		Apellido = apellido;
 	}
-	public String getEmail() {
-		return Email;
+    public String getEmail() {
+		return email;
 	}
 	public void setEmail(String email) {
-		Email = email;
+		this.email = email;
 	}
 	public String getUsuario() {
 		return Usuario;
@@ -67,6 +74,8 @@ public class UserAdmin {
 	public void setUsuario(String usuario) {
 		Usuario = usuario;
 	}
+	
+    @JsonProperty(access = Access.WRITE_ONLY)
 	public String getPassword() {
 		return Password;
 	}
@@ -84,5 +93,11 @@ public class UserAdmin {
 	}
 	public void setUserRole(String userRole) {
 		UserRole = userRole;
+	}
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}		
 }
