@@ -18,10 +18,10 @@ public class UserAdmin {
 	private Long id;
 	
     @NotBlank(message = "El nombre es requerido")		
-    private String Nombre;
+    private String nombre;
     
     @NotBlank(message = "El Apellido es requerido")	
-    private String Apellido;
+    private String apellido;
     
     @NotBlank(message = "El Email es requerido")
     @Column(unique=true)
@@ -30,15 +30,15 @@ public class UserAdmin {
 
 	@NotBlank(message = "El Usuario es requerido")
     @Column(unique=true)
-    private String Usuario;
+    private String usuario;
     
     @NotBlank(message = "El Password es requerido")		
-    private String Password;
+    private String password;
     
     @NotBlank(message = "Aceptar los terminos de uso es requerido")		
-    private String Userterms;
+    private String userterms;
     
-    private String UserRole = "ADMIN";
+    private String userRole = "ADMIN";
     
     private String resetPasswordToken;
     
@@ -51,16 +51,16 @@ public class UserAdmin {
 		this.id = id;
 	}
 	public String getNombre() {
-		return Nombre;
+		return nombre;
 	}
 	public void setNombre(String nombre) {
-		Nombre = nombre;
+		this.nombre = nombre;
 	}	
 	public String getApellido() {
-		return Apellido;
+		return apellido;
 	}
 	public void setApellido(String apellido) {
-		Apellido = apellido;
+		this.apellido = apellido;
 	}
     public String getEmail() {
 		return email;
@@ -69,30 +69,30 @@ public class UserAdmin {
 		this.email = email;
 	}
 	public String getUsuario() {
-		return Usuario;
+		return usuario;
 	}
 	public void setUsuario(String usuario) {
-		Usuario = usuario;
+		this.usuario = usuario;
 	}
 	
     @JsonProperty(access = Access.WRITE_ONLY)
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
 	public String getUserTerms() {
-		return Userterms;
+		return userterms;
 	}
 	public void setUserTerms(String userTerms) {
-		Userterms = userTerms;
+		userterms = userTerms;
 	}
 	public String getUserRole() {
-		return UserRole;
+		return userRole;
 	}
 	public void setUserRole(String userRole) {
-		UserRole = userRole;
+		this.userRole = userRole;
 	}
 	public String getResetPasswordToken() {
 		return resetPasswordToken;
