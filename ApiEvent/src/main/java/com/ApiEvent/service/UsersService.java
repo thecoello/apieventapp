@@ -8,47 +8,46 @@ import org.springframework.stereotype.Service;
 
 import com.ApiEvent.domain.UserAdmin;
 import com.ApiEvent.repository.UserRepository;
+import com.ApiEvent.web.error.ErrorMessage;
 
 @Service
 public class UsersService {
-	
+
 	private PasswordEncoder passwordEncoder;
-	
+
 	UserRepository userRepository;
-	
 
 	public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
-	
+
 	}
-	
-	public List<UserAdmin> getUsers(){
+
+	public List<UserAdmin> getUsers() {
 		return userRepository.findAll();
 	}
-	
-	public Optional<UserAdmin> getUser(Long id){
+
+	public Optional<UserAdmin> getUser(Long id) {
 		return userRepository.findById(id);
 	}
-	
-	public Long postUser(UserAdmin user){
-		
+
+	public Long postUser(UserAdmin user) {
+
 		UserAdmin _user = user;
 		String encryptPass = passwordEncoder.encode(user.getPassword());
-		
+
 		_user.setPassword(encryptPass);
-		
+
 		UserAdmin saveUser = userRepository.save(_user);
 		userRepository.save(saveUser);
 		return saveUser.getId();
 	}
-		
+
 	public Optional<UserAdmin> putUser(Long id, UserAdmin user) {
-		userRepository.findById(id)
-		.ifPresent(_user -> {
-			
+		userRepository.findById(id).ifPresent(_user -> {
+
 			String encryptPass = passwordEncoder.encode(user.getPassword());
-			
+
 			_user.setNombre(user.getNombre());
 			_user.setApellido(user.getApellido());
 			_user.setEmail(user.getEmail());
@@ -59,15 +58,47 @@ public class UsersService {
 
 			userRepository.save(_user);
 		});
-		
+
 		return userRepository.findById(id);
 	}
-	
+
 	public Optional<UserAdmin> deleteUser(Long id) {
 		userRepository.deleteById(id);
 		return userRepository.findById(id);
 	}
-	  
+
+	public void updateResetPasswordToken(String token, String email) {
+		UserAdmin _user = userRepository.findByEmail(email);
+		if (_user != null) {
+			_user.setResetPasswordToken(token);
+			userRepository.save(_user);
+		} else {
+			throw new ErrorMessage("Could not find any customer with the email " + email);
+		}
+	}
 	
+	  public UserAdmin getByResetPasswordToken(String token) {
+	        return userRepository.findByResetPasswordToken(token);
+	    }
+	  
+	  public void updatePassword(UserAdmin user, String newPassword) {
+		  
+			String encryptPass = passwordEncoder.encode(newPassword);
+
+	        String encodedPassword = passwordEncoder.encode(encryptPass);
+	        user.setPassword(encodedPassword);
+	         
+	        user.setResetPasswordToken(null);
+	        userRepository.save(user);
+	    }
+	  
+		public UserAdmin findByEmail(String email){
+			return userRepository.findByEmail(email);
+			
+		}
+		public UserAdmin findByResetPasswordToken(String token) {
+			return userRepository.findByResetPasswordToken(token);
+
+		}
 
 }
