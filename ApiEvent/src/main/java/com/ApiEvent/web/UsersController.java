@@ -52,7 +52,8 @@ public class UsersController {
 	@PostMapping(path = "/users")
 	ResponseEntity<Object> postUser(@RequestBody @Valid UserAdmin user ) {		
 
-		if(usersService.findByEmail(user.getEmail())  != null){
+		
+		if(usersService.findByEmail(user.getEmail())  != null || usersService.findByUsuario(user.getUsuario())  != null){
 	    	 return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario ya existe");
 		}else {
 			Long createUser = usersService.postUser(user);
