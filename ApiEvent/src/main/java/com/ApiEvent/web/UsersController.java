@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,49 +29,60 @@ public class UsersController {
 	UsersService usersService;
 
 	@GetMapping(path = "/users")
-	List<UserAdmin>getUsers(@RequestParam(required = false) Map<String,String> params){	
+	ResponseEntity<Object>getUsers(@RequestParam(required = false) Map<String,String> params){	
 		
 		List<UserAdmin> findAllUsers = usersService.getUsers();
 		
 		if(findAllUsers.isEmpty()) {
-			throw new ErrorMessage("No hay usuarios registrados");
+	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay usuarios registrados");
 		}else {
-			return findAllUsers;
+	    	 return ResponseEntity.status(HttpStatus.OK).body(findAllUsers);
 		}
 	}
 	
 	@GetMapping(path = "/users/{id}")
-	UserAdmin getUsers(@PathVariable Long id){				
+	ResponseEntity<Object> getUser(@PathVariable Long id){				
 		if(usersService.getUser(id).isPresent()) {
-			return usersService.getUser(id).get();
+	    	 return ResponseEntity.status(HttpStatus.OK).body(usersService.getUser(id).get());
 		}else {
-			throw new ErrorMessage("Usuario no encontrado");
+	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no creado");
 		}
 	}
 	
 	@PostMapping(path = "/users")
-	Long postUser(@RequestBody @Valid UserAdmin user ) {				
-		return usersService.postUser(user);		
+	ResponseEntity<Object> postUser(@RequestBody @Valid UserAdmin user ) {		
+
+		if(usersService.findByEmail(user.getEmail())  != null){
+	    	 return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario ya existe");
+		}else {
+			Long createUser = usersService.postUser(user);
+			Optional<UserAdmin> userCreated = usersService.getUser(createUser);
+			if(userCreated.isPresent()) {
+		    	 return ResponseEntity.status(HttpStatus.OK).body(userCreated);
+			}else {
+		    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no creado");
+			}
+		}
 	}
 	
 	@PutMapping(path = "/users/{id}")
-	Optional<UserAdmin> modificaUser(@RequestBody UserAdmin user,@PathVariable Long id) {
+	ResponseEntity<Object> modificaUser(@RequestBody UserAdmin user,@PathVariable Long id) {
 		Optional<UserAdmin> userFind = usersService.getUser(id);
 		if(userFind.isPresent()) {
 			usersService.putUser(id, user);		
-			return userFind;	
+	    	 return ResponseEntity.status(HttpStatus.OK).body(userFind);
 		}else {
-			throw new ErrorMessage("Usuario no encontrado");
+	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
 		}
 	}
 	
 	@DeleteMapping(path="/users/{id}")
-	String borraUser(@PathVariable Long id) {	
+	ResponseEntity<String> borraUser(@PathVariable Long id) {	
 		if(usersService.getUser(id).isPresent()) {
 			usersService.deleteUser(id);	
-			return("Usuario eliminado");	
+			return ResponseEntity.ok("Usuario eliminado");
 		}else {
-			throw new ErrorMessage("Usuario no encontrado");
+	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
 		}
 	}
 	
