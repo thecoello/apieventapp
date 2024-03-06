@@ -93,9 +93,15 @@ public class UsersService {
 	    }
 	  
 		public UserAdmin findByEmail(String email){
-			return userRepository.findByEmail(email);
-			
+			return userRepository.findByEmail(email);	
 		}
+		
+		public UserAdmin findByUsuario(String usuario){
+			return userRepository.findByUsuario(usuario);
+		}
+			
+		
+		
 		public UserAdmin findByResetPasswordToken(String token) {
 			return userRepository.findByResetPasswordToken(token);
 
