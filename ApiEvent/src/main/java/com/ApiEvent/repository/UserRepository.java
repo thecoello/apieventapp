@@ -7,5 +7,6 @@ import com.ApiEvent.domain.UserAdmin;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserAdmin, Long>{
-
+	 UserAdmin findByEmail(String email);
+	 UserAdmin findByResetPasswordToken(String token);
 }
