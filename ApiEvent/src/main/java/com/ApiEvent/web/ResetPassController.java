@@ -1,7 +1,5 @@
 package com.ApiEvent.web;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +30,7 @@ public class ResetPassController {
 	    String token = RandomString.make(30);
 	    	 
 		if(usersService.updateResetPasswordToken(token, email) != null) {
-		     String resetPasswordLink =  "http://localhost:8080/reset_password?token=" + token;
+		     String resetPasswordLink =  "http://localhost:4200/resetearcontrasena?token=" + token;
 		        mailService.sendSimpleMessage(email, "Recuperación de contraseña", resetPasswordLink);
 		        return ResponseEntity.status(HttpStatus.OK).body("Email de recuperación de password enviado");	        
 
