@@ -1,7 +1,7 @@
 package com.ApiEvent.service;
 
-import com.ApiEvent.events.model.Ticket;
-import com.ApiEvent.events.repository.TicketRepository;
+import com.ApiEvent.events.Ticket;
+import com.ApiEvent.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
