@@ -1,6 +1,6 @@
 package com.ApiEvent.web;
 
-import com.ApiEvent.events.Event;
+import com.ApiEvent.domain.Event;
 import com.ApiEvent.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

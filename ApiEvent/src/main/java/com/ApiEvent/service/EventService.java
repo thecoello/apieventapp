@@ -1,6 +1,6 @@
 package com.ApiEvent.service;
 
-import com.ApiEvent.events.Event;
+import com.ApiEvent.domain.Event;
 import com.ApiEvent.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

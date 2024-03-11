@@ -1,4 +1,4 @@
-package com.ApiEvent.events;
+package com.ApiEvent.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
