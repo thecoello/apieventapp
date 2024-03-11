@@ -27,7 +27,8 @@ public class SecurityConfig   {
                     .requestMatchers(HttpMethod.POST, "/users").permitAll()
                     .requestMatchers(HttpMethod.POST, "/forgot_password").permitAll()
                     .requestMatchers(HttpMethod.POST, "/reset_password").permitAll()
-                    .anyRequest().hasAnyRole("ADMIN")
+                    .anyRequest().permitAll()
+                    //.anyRequest().hasAnyRole("ADMIN")
             )
             .httpBasic(Customizer.withDefaults());
      
