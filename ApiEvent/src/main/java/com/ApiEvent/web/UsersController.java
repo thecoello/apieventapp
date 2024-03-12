@@ -69,11 +69,11 @@ public class UsersController {
 	@PutMapping(path = "/users/{id}")
 	ResponseEntity<Object> modificaUser(@RequestBody UserAdmin user,@PathVariable Long id) {
 		Optional<UserAdmin> userFind = usersService.getUser(id);
-		if(usersService.findByEmail(user.getEmail())  != null || usersService.findByUsuario(user.getUsuario())  != null) {
+		if(usersService.getUser(id).isPresent()) {
 			usersService.putUser(id, user);		
-	    	 return ResponseEntity.status(HttpStatus.OK).body(userFind);
+	    	 return ResponseEntity.status(HttpStatus.OK).body("Usuario actualizado");
 		}else {
-	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no se ha podido actualizar");
 		}
 	}
 	
