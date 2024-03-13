@@ -53,8 +53,6 @@ public class UsersService {
 			_user.setEmail(user.getEmail());
 			_user.setUsuario(user.getUsuario());
 			_user.setPassword(encryptPass);
-			_user.setUserTerms(user.getUserTerms());
-			_user.setUserRole(user.getUserRole());
 
 			userRepository.save(_user);
 		});

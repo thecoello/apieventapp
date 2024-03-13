@@ -7,14 +7,17 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class UserAdmin {
 		
 	@Id
-	@GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
     @NotBlank(message = "El nombre es requerido")		
@@ -23,11 +26,11 @@ public class UserAdmin {
     @NotBlank(message = "El Apellido es requerido")	
     private String apellido;
     
+    @Email
     @NotBlank(message = "El Email es requerido")
     @Column(unique=true)
     private String email;
     
-
 	@NotBlank(message = "El Usuario es requerido")
     @Column(unique=true)
     private String usuario;
