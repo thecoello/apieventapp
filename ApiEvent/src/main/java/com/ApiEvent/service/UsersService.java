@@ -46,13 +46,15 @@ public class UsersService {
 	public Optional<UserAdmin> putUser(Long id, UserAdmin user) {
 		userRepository.findById(id).ifPresent(_user -> {
 
-			String encryptPass = passwordEncoder.encode(user.getPassword());
+			if(user.getPassword() != null ) {
+				String encryptPass = passwordEncoder.encode(user.getPassword());
+				_user.setPassword(encryptPass);
+			}
 
 			_user.setNombre(user.getNombre());
 			_user.setApellido(user.getApellido());
 			_user.setEmail(user.getEmail());
 			_user.setUsuario(user.getUsuario());
-			_user.setPassword(encryptPass);
 
 			userRepository.save(_user);
 		});
