@@ -68,7 +68,7 @@ public class UsersController {
 	}
 	
 	@PutMapping(path = "/users/{id}")
-	ResponseEntity<Object> modificaUser(@RequestBody UserAdmin user,@PathVariable Long id) {
+	ResponseEntity<Object> putUser(@RequestBody UserAdmin user,@PathVariable Long id) {
 		Optional<UserAdmin> userFind = usersService.getUser(id);
 		if(userFind.isPresent()) {
 			usersService.putUser(id, user);		
@@ -79,7 +79,7 @@ public class UsersController {
 	}
 	
 	@DeleteMapping(path="/users/{id}")
-	ResponseEntity<String> borraUser(@PathVariable Long id) {	
+	ResponseEntity<String> deleteUser(@PathVariable Long id) {	
 		if(usersService.getUser(id).isPresent()) {
 			usersService.deleteUser(id);	
 			return ResponseEntity.ok("Usuario eliminado");

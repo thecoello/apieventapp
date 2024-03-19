@@ -5,63 +5,50 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "zones")
 public class Zone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombreZona", nullable = false)
+    @Column
     private String nombreZona;
-
-    @Column(name = "cantidadDeTickets")
-    private String cantidadDeTickets;
+ 
+    @Column
+    private Long cantidadDeTickets;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    public Zone() {
-    }
+	public Long getId() {
+		return id;
+	}
 
-    // Getters y setters
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getNombreZona() {
+		return nombreZona;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setNombreZona(String nombreZona) {
+		this.nombreZona = nombreZona;
+	}
 
-    public String getNombreZona() {
-        return nombreZona;
-    }
+	public Long getCantidadDeTickets() {
+		return cantidadDeTickets;
+	}
 
-    public void setNombreZona(String nombreZona) {
-        this.nombreZona = nombreZona;
-    }
+	public void setCantidadDeTickets(Long cantidadDeTickets) {
+		this.cantidadDeTickets = cantidadDeTickets;
+	}
 
-    public String getCantidadDeTickets() {
-        return cantidadDeTickets;
-    }
 
-    public void setCantidadDeTickets(String cantidadDeTickets) {
-        this.cantidadDeTickets = cantidadDeTickets;
-    }
+    
 
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 
 }
