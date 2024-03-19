@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 import com.ApiEvent.domain.UserAdmin;
 import com.ApiEvent.repository.UserRepository;
 import com.ApiEvent.web.error.ErrorMessage;
-import com.ApiEvent.domain.Attendee;
 import com.ApiEvent.domain.Event;
 import com.ApiEvent.repository.EventRepository;
 
-import com.ApiEvent.repository.AttendeeRepository;
 import java.util.List;
 
 @Service
@@ -25,7 +23,6 @@ public class UsersService {
     @Autowired
     private UserRepository userRepository;
     private EventRepository eventRepository;
-    private AttendeeRepository attendeeRepository;
     
 
 	public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -124,8 +121,6 @@ public class UsersService {
 	        if (user != null) {
 	            List<Event> events = eventRepository.findByUserId(user.getId());
 	            for (Event event : events) {
-	                List<Attendee> attendees = attendeeRepository.findByEventId(event.getId());
-	                attendeeRepository.deleteAll(attendees);
 	                eventRepository.delete(event);
 	            }
 	            userRepository.delete(user);
