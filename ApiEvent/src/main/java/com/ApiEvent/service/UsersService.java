@@ -3,19 +3,30 @@ package com.ApiEvent.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ApiEvent.domain.UserAdmin;
 import com.ApiEvent.repository.UserRepository;
 import com.ApiEvent.web.error.ErrorMessage;
+import com.ApiEvent.domain.Attendee;
+import com.ApiEvent.domain.Event;
+import com.ApiEvent.repository.EventRepository;
+
+import com.ApiEvent.repository.AttendeeRepository;
+import java.util.List;
 
 @Service
 public class UsersService {
 
 	private PasswordEncoder passwordEncoder;
 
-	UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+    private EventRepository eventRepository;
+    private AttendeeRepository attendeeRepository;
+    
 
 	public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
@@ -77,7 +88,6 @@ public class UsersService {
 			return null;
 		}
 	
-		
 	}
 	
 	  public UserAdmin getByResetPasswordToken(String token) {
@@ -104,10 +114,23 @@ public class UsersService {
 		}
 			
 		
-		
 		public UserAdmin findByResetPasswordToken(String token) {
 			return userRepository.findByResetPasswordToken(token);
 
 		}
 
+	    public void deleteUserAndEventsByEmail(String email) {
+	        UserAdmin user = userRepository.findByEmail(email);
+	        if (user != null) {
+	            List<Event> events = eventRepository.findByUserId(user.getId());
+	            for (Event event : events) {
+	                List<Attendee> attendees = attendeeRepository.findByEventId(event.getId());
+	                attendeeRepository.deleteAll(attendees);
+	                eventRepository.delete(event);
+	            }
+	            userRepository.delete(user);
+	        } else {
+	            throw new RuntimeException("Usuario no encontrado");
+	        }
+	    }
 }
