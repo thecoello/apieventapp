@@ -116,14 +116,14 @@ public class UsersService {
 
 		}
 
-	    public void deleteUserAndEventsByEmail(String email) {
-	        UserAdmin user = userRepository.findByEmail(email);
-	        if (user != null) {
-	            List<Event> events = eventRepository.findByUserId(user.getId());
+	    public void deleteUserAndEventsByuserAdminId(Long id) {
+	        Optional<UserAdmin> user = userRepository.findById(id);
+	        if (user.isPresent()) {
+	            List<Event> events = eventRepository.findByUserAdminId(id);
 	            for (Event event : events) {
 	                eventRepository.delete(event);
 	            }
-	            userRepository.delete(user);
+	            userRepository.deleteById(id);
 	        } else {
 	            throw new RuntimeException("Usuario no encontrado");
 	        }
