@@ -60,10 +60,10 @@ public class EventService {
 		if (!image.isEmpty()) {
 
 			try {
-				String pathToFile = "src/main/resources/static/uploads/imagesEvents/" + "_" + event.getNombre() + "_" + image.getOriginalFilename();
+				String pathToFile = "src/main/resources/static/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_");
 				File newFile = new File(pathToFile );
 				image.transferTo(newFile.toPath());
-				event.setImage("/uploads/imagesEvents/" + "_" + event.getNombre() + "_" + image.getOriginalFilename());					
+				event.setImage("/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_"));					
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -74,10 +74,10 @@ public class EventService {
 		if (!imageMapaZona.isEmpty()) {
 
 			try {
-				String pathToFile = "src/main/resources/static/uploads/imagesMaps/" + "_" + event.getNombre() + "_" + image.getOriginalFilename();
+				String pathToFile = "src/main/resources/static/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_");
 				File newFile = new File(pathToFile );
-				image.transferTo(newFile.toPath());
-				event.setImageMapaZona("/uploads/imagesMaps/" + "_" + event.getNombre() + "_" + image.getOriginalFilename());			
+				imageMapaZona.transferTo(newFile.toPath());
+				event.setImageMapaZona("/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_"));					
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
