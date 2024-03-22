@@ -60,7 +60,7 @@ public class EventService {
 		if (!image.isEmpty()) {
 
 			try {
-				String pathToFile = "src/main/resources/static/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_");
+				String pathToFile = "static/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_");
 				File newFile = new File(pathToFile );
 				image.transferTo(newFile.toPath());
 				event.setImage("/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_"));					
@@ -74,7 +74,7 @@ public class EventService {
 		if (!imageMapaZona.isEmpty()) {
 
 			try {
-				String pathToFile = "src/main/resources/static/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_");
+				String pathToFile = "static/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_");
 				File newFile = new File(pathToFile );
 				imageMapaZona.transferTo(newFile.toPath());
 				event.setImageMapaZona("/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_"));					
