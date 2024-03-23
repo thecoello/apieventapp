@@ -89,8 +89,53 @@ public class EventService {
 		return saveEvent.getId();
 	}
 
-	public Optional<Event> putEvent(Long id, Event event) {
+	public Optional<Event> putEvent(Long id,Map<String, String> eventParam, MultipartFile image, MultipartFile imageMapaZona) {
 		eventRepository.findById(id).ifPresent(_event -> {
+			ObjectMapper objectMapper = new ObjectMapper();
+			String zonas = "zonas";		
+			List<Zone> zones = new ArrayList<Zone>();
+
+			JsonObject convertedObject = new Gson().fromJson(eventParam.get(zonas).toString(), JsonObject.class);
+			
+			JsonArray result = convertedObject.get("zonas").getAsJsonArray();
+			
+			for (JsonElement jsonElement : result) {
+				Zone zone = new Gson().fromJson(jsonElement.toString(), Zone.class);
+				zones.add(zone);
+			}	
+		
+			eventParam.remove(zonas);
+			
+			Event event = objectMapper.convertValue(eventParam, Event.class);		
+			event.setZonas(zones);
+
+			if (!image.isEmpty()) {
+
+				try {
+					String pathToFile = "static/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_");
+					File newFile = new File(pathToFile );
+					image.transferTo(newFile.toPath());
+					event.setImage("/uploads/imagesevents/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  image.getOriginalFilename().replaceAll("\\s+", "_"));					
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if (!imageMapaZona.isEmpty()) {
+
+				try {
+					String pathToFile = "static/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_");
+					File newFile = new File(pathToFile );
+					imageMapaZona.transferTo(newFile.toPath());
+					event.setImageMapaZona("/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_"));					
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 
 			_event.setNombre(event.getNombre());
 			_event.setImage(event.getImage());

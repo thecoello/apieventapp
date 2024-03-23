@@ -73,11 +73,13 @@ public class EventController {
 
 	}
 
-	@PutMapping(path = "/events/{id}")
-	ResponseEntity<Object> putEvent(@RequestBody Event event, @PathVariable Long id) {
+	@PutMapping(path = "/events/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
+	ResponseEntity<Object> putEvent(@RequestParam Map<String, String> eventParam,
+			@RequestParam("image") MultipartFile image, @RequestParam("imageMapaZona") MultipartFile imageMapaZona, @PathVariable Long id) {
 		Optional<Event> eventFind = eventService.getEvent(id);
 		if (eventFind.isPresent()) {
-			eventService.putEvent(id, event);
+			eventService.putEvent(id, eventParam, image, imageMapaZona);
 			return ResponseEntity.status(HttpStatus.OK).body(eventFind);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El evento no se ha podido actualizar");
