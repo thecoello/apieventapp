@@ -45,12 +45,12 @@ public class Event {
 
     @Column(nullable = false)
     @NotNull(message = "La fecha y hora del inicio del evento es requerido")
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     private Date fechaInicio;
 
     @Column(nullable = false)
     @NotNull(message = "La fecha y hora del final del evento es requerido")
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     private Date fechaFinal;
 
     @Column
@@ -65,7 +65,7 @@ public class Event {
     @Column
     private String imageMapaZona; 
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "zone_id")
     private List<Zone> zonas = new ArrayList<Zone>();
 

@@ -61,7 +61,7 @@ public class EventController {
 	@PostMapping(path = "/events", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	ResponseEntity<Object> postEvent(@RequestParam Map<String, String> eventParam,
-			@RequestParam("image") MultipartFile image, @RequestParam("imageMapaZona") MultipartFile imageMapaZona) {
+			@RequestParam("image") MultipartFile image, MultipartFile imageMapaZona) {
 
 		Long createEvent = eventService.postEvent(eventParam, image, imageMapaZona);
 		Optional<Event> eventCreated = eventService.getEvent(createEvent);

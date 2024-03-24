@@ -43,6 +43,8 @@ public class EventService {
 		String zonas = "zonas";		
 		List<Zone> zones = new ArrayList<Zone>();
 
+		
+		if(eventParam.get(zonas) != null) {
 		JsonObject convertedObject = new Gson().fromJson(eventParam.get(zonas).toString(), JsonObject.class);
 		
 		JsonArray result = convertedObject.get("zonas").getAsJsonArray();
@@ -53,8 +55,9 @@ public class EventService {
 		}	
 	
 		eventParam.remove(zonas);
+		}
 		
-		Event event = objectMapper.convertValue(eventParam, Event.class);		
+		Event event = objectMapper.convertValue(eventParam, Event.class);
 		event.setZonas(zones);
 
 		if (!image.isEmpty()) {
@@ -71,7 +74,7 @@ public class EventService {
 			}
 		}
 		
-		if (!imageMapaZona.isEmpty()) {
+		if (imageMapaZona != null) {
 
 			try {
 				String pathToFile = "static/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_");
@@ -83,6 +86,8 @@ public class EventService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}else {
+			event.setImageMapaZona(null);
 		}
 		
 		Event saveEvent = eventRepository.save(event);
@@ -91,10 +96,13 @@ public class EventService {
 
 	public Optional<Event> putEvent(Long id,Map<String, String> eventParam, MultipartFile image, MultipartFile imageMapaZona) {
 		eventRepository.findById(id).ifPresent(_event -> {
+		
 			ObjectMapper objectMapper = new ObjectMapper();
 			String zonas = "zonas";		
 			List<Zone> zones = new ArrayList<Zone>();
 
+			
+			if(eventParam.get(zonas) != null) {
 			JsonObject convertedObject = new Gson().fromJson(eventParam.get(zonas).toString(), JsonObject.class);
 			
 			JsonArray result = convertedObject.get("zonas").getAsJsonArray();
@@ -105,8 +113,9 @@ public class EventService {
 			}	
 		
 			eventParam.remove(zonas);
+			}
 			
-			Event event = objectMapper.convertValue(eventParam, Event.class);		
+			Event event = objectMapper.convertValue(eventParam, Event.class);
 			event.setZonas(zones);
 
 			if (!image.isEmpty()) {
@@ -123,7 +132,7 @@ public class EventService {
 				}
 			}
 			
-			if (!imageMapaZona.isEmpty()) {
+			if (imageMapaZona != null) {
 
 				try {
 					String pathToFile = "static/uploads/imagesmaps/" + event.getNombre().replaceAll("\\s+", "_")+ "_" +  imageMapaZona.getOriginalFilename().replaceAll("\\s+", "_");
@@ -135,8 +144,10 @@ public class EventService {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}else {
+				event.setImageMapaZona(null);
 			}
-
+			
 			_event.setNombre(event.getNombre());
 			_event.setImage(event.getImage());
 			_event.setTipoEvento(event.getTipoEvento());
@@ -148,6 +159,8 @@ public class EventService {
 			_event.setDireccion(event.getDireccion());
 			_event.setImageMapaZona(event.getImageMapaZona());
 			_event.setZonas(event.getZonas());
+			
+			eventRepository.save(_event);
 
 		});
 
