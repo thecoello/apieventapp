@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ApiEvent.domain.Event;
-import com.ApiEvent.domain.UserAdmin;
 import com.ApiEvent.domain.Zone;
 import com.ApiEvent.repository.EventRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,7 +95,7 @@ public class EventService {
 
 	public Optional<Event> putEvent(Long id,Map<String, String> eventParam, MultipartFile image, MultipartFile imageMapaZona) {
 		eventRepository.findById(id).ifPresent(_event -> {
-		
+			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String zonas = "zonas";		
 			List<Zone> zones = new ArrayList<Zone>();
@@ -117,6 +116,7 @@ public class EventService {
 			
 			Event event = objectMapper.convertValue(eventParam, Event.class);
 			event.setZonas(zones);
+
 
 			if (!image.isEmpty()) {
 
@@ -159,7 +159,7 @@ public class EventService {
 			_event.setDireccion(event.getDireccion());
 			_event.setImageMapaZona(event.getImageMapaZona());
 			_event.setZonas(event.getZonas());
-			
+	
 			eventRepository.save(_event);
 
 		});

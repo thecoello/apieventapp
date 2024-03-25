@@ -66,7 +66,6 @@ public class Event {
     private String imageMapaZona; 
     
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "zone_id")
     private List<Zone> zonas = new ArrayList<Zone>();
 
 	public Long getId() {
@@ -172,7 +171,6 @@ public class Event {
 	public void setZonas(List<Zone> zonas) {
 		this.zonas = zonas;
 	}
-    
-    
+	
 
 }
